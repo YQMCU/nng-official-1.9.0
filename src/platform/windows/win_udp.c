@@ -321,7 +321,11 @@ nni_plat_udp_sockname(nni_plat_udp *udp, nni_sockaddr *sa)
 static int
 ip4_multicast_member(nni_plat_udp *udp, SOCKADDR *sa, bool join)
 {
+#if __MINGW64__
+    struct ip_mreq mreq;
+#else
 	IP_MREQ          mreq;
+#endif
 	SOCKADDR_IN     *sin;
 	SOCKADDR_STORAGE local;
 	int              sz = sizeof(local);

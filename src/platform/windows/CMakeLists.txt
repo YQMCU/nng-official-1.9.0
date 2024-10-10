@@ -11,11 +11,18 @@
 
 # We cannot use nng_sources_if because these tests don't go into
 # the static library unless they also go into the dynamic.
+
 if (NNG_PLATFORM_WINDOWS)
     nng_check_sym(InitializeConditionVariable windows.h NNG_HAVE_CONDVAR)
     nng_check_sym(timespec_get time.h NNG_HAVE_TIMESPEC_GET)
     nng_check_sym(snprintf stdio.h NNG_HAVE_SNPRINTF)
-    if (NOT NNG_HAVE_CONDVAR OR NOT NNG_HAVE_SNPRINTF OR NOT NNG_HAVE_TIMESPEC_GET)
+
+    message("NNG_PLATFORM_WINDOWS: ${NNG_PLATFORM_WINDOWS}")
+    message("NNG_HAVE_SNPRINTF: ${NNG_HAVE_SNPRINTF}")
+    message("NNG_HAVE_TIMESPEC_GET: ${NNG_HAVE_TIMESPEC_GET}")
+    message("NNG_HAVE_CONDVAR: ${NNG_HAVE_CONDVAR}")
+
+    if (NOT NNG_HAVE_CONDVAR OR NOT NNG_HAVE_SNPRINTF) # OR NOT NNG_HAVE_TIMESPEC_GET)
         message(FATAL_ERROR
                 "Modern Windows API support is missing. "
                 "Versions of Windows prior to Vista are not supported.  "
